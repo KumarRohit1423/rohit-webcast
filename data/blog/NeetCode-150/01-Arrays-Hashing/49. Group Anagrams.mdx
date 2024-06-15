@@ -1,0 +1,83 @@
+---
+title: Group Anagrams
+tags:
+  - medium
+  - NeetCode150
+  - Blind75
+  - Arrays Hashing
+date: 2024-05-30T15:16:00
+summary: Given an array of strings `strs`, group **the anagrams**  together. You can return the answer in **any order** .
+---
+
+# [49. Group Anagrams](https://leetcode.com/problems/group-anagrams/description/)
+
+Given an array of strings `strs`, group **the anagrams** together. You can return the answer in **any order** .
+
+An **Anagram** is a word or phrase formed by rearranging the letters of a different word or phrase, typically using all the original letters exactly once.
+
+**Example 1:**
+
+```
+Input: strs = ["eat","tea","tan","ate","nat","bat"]
+Output: [["bat"],["nat","tan"],["ate","eat","tea"]]
+```
+
+**Example 2:**
+
+```
+Input: strs = [""]
+Output: [[""]]
+```
+
+**Example 3:**
+
+```
+Input: strs = ["a"]
+Output: [["a"]]
+```
+
+**Constraints:**
+
+- `1 <= strs.length <= 10^4`
+- `0 <= strs[i].length <= 100`
+- `strs[i]` consists of lowercase English letters.
+
+---
+
+# My Approach
+
+```cpp
+class Solution {
+ public:
+  vector<vector<string>> groupAnagrams(vector<string>& strs) {
+    vector<int> charCount(26, 0);
+    string str = "";
+    vector<vector<string>> ans;
+    unordered_map<string, vector<string>> mp;
+    for (int i = 0; i < strs.size(); i++) {
+      for (int j = 0; j < strs[i].size(); j++) {
+        charCount[strs[i][j] - 'a']++;
+      }
+      for (int j = 0; j < 26; j++) {
+        if (charCount[j] > 0) {
+          str.push_back((char)('0' + charCount[j]));
+          str.push_back((char)('a' + j));
+        }
+      }
+      mp[str].push_back(strs[i]);
+      str.clear();
+      for (int j = 0; j < 26; j++) {
+        charCount[j] = 0;
+      }
+    }
+    for (auto& x : mp) {
+      ans.push_back(x.second);
+    }
+    return ans;
+  }
+};
+```
+
+# Notes
+
+My approach is to store the anagrams based on a specific key that is produced by count of letters in that string followed by the letter itself in order. For example "anna" and "naan" get the same key "2a2n". Now formulating a key can be done in many different ways, the most intuitive one being make it's sorted string a key for each string. Theoretically this approach should be as good as them, although slightly complex.
