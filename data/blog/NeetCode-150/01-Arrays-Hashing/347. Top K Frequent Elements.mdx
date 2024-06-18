@@ -77,6 +77,8 @@ I had also thought of heap as I understand heap can return queries for successiv
 
 Looking at the editorial a better optimized solution would be to have a HashMap to store frequencies (like i did), but then choose a pivot and try to partition it at K so that items on the left(or right) would be of the required frequencies.
 
+The choice to a partitoning algorithm lead me to a whole new side quest of understanding quicksort and its partitioning algorithm. You see quicksort was developed by Tony Hoare in 1960s and is a divide and conquer algorithm. The partitioning algorithm is the heart of quicksort and is used in many other algorithms like quickselect, quicksort, etc. I needed to understand quickselect since the other partitoning scheme usually used is the Lomuto partitioning scheme. This side-quest, although a lot of time-consuming, was very informative and I am glad I did it.
+
 ---
 
 # Better Approach
