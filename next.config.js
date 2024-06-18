@@ -65,17 +65,16 @@ module.exports = () => {
     eslint: {
       dirs: ['app', 'components', 'layouts', 'scripts'],
     },
+    // basePath: '/tailwind-nextjs-starter-blog',
+    // output: 'export',
     images: {
       remotePatterns: [
-        {
-          protocol: 'https',
-          hostname: 'picsum.photos',
-        },
         {
           protocol: 'https',
           hostname: 'upload.wikimedia.org',
         },
       ],
+      unoptimized: true,
     },
     async headers() {
       return [
