@@ -2,7 +2,7 @@
 const siteMetadata = {
   title: 'Knowledge Base',
   author: 'Rohit Kumar Choudhary',
-  headerTitle: 'Knowledge Base',
+  headerTitle: "Rohit's Webcast",
   description: 'A blog created to share code and projects using Next.js and Tailwind.css',
   language: 'en-us',
   theme: 'system', // system, dark or light

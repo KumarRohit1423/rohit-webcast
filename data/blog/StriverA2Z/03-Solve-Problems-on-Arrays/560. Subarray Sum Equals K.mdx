@@ -1,0 +1,63 @@
+---
+title: Subarray Sum Equals K
+tags:
+  - medium
+  - StriverA2Z
+date: 2024-06-21T17:55:00
+summary: Given an array of integers `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.
+---
+
+# [560. Subarray Sum Equals K](https://leetcode.com/problems/subarray-sum-equals-k/description/)
+
+Given an array of integers `nums` and an integer `k`, return the total number of subarrays whose sum equals to `k`.
+
+A subarray is a contiguous **non-empty** sequence of elements within an array.
+
+**Example 1:**
+
+```
+Input: nums = [1,1,1], k = 2
+Output: 2
+```
+
+**Example 2:**
+
+```
+Input: nums = [1,2,3], k = 3
+Output: 2
+```
+
+**Constraints:**
+
+- `1 <= nums.length <= 2 * 10^4`
+- `-1000 <= nums[i] <= 1000`
+- `-10^7 <= k <= 10^7`
+
+---
+
+# My Approach
+
+```cpp
+class Solution {
+ public:
+  int subarraySum(vector<int>& nums, int k) {
+    int prefSum = 0, ans = 0;
+    unordered_map<int, int> mp;
+    for (int i = 0; i < nums.size(); i++) {
+      prefSum += nums.at(i);
+      if (prefSum == k) {
+        ans++;
+      }
+      if (mp.find(prefSum - k) != mp.end()) {
+        ans += mp[prefSum - k];
+      }
+      mp[prefSum]++;
+    }
+    return ans;
+  }
+};
+```
+
+# Notes
+
+A variation of the standard sliding window problem, here we need to calculate the total number of subarrays having sum equal to some `k`. Keeping the count of all previous prefix sum does the job.

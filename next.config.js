@@ -73,6 +73,14 @@ module.exports = () => {
           protocol: 'https',
           hostname: 'upload.wikimedia.org',
         },
+        {
+          protocol: 'https',
+          hostname: 'assets.leetcode.com',
+        },
+        {
+          protocol: 'https',
+          hostname: 's3.amazonaws.com',
+        },
       ],
       unoptimized: true,
     },

@@ -1,0 +1,70 @@
+---
+title: Sort Colors
+tags:
+  - medium
+  - StriverA2Z
+date: 2024-06-12T10:17:00
+summary: Given an array `nums` with `n` objects colored red, white, or blue, sort them in-place that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+---
+
+# [75. Sort Colors](https://leetcode.com/problems/sort-colors/description/)
+
+Given an array `nums` with `n` objects colored red, white, or blue, sort them [in-place]("https://en.wikipedia.org/wiki/In-place_algorithm") so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+
+We will use the integers `0`, `1`, and `2` to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
+
+**Example 1:**
+
+```
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+```
+
+**Example 2:**
+
+```
+Input: nums = [2,0,1]
+Output: [0,1,2]
+```
+
+**Constraints:**
+
+- `n == nums.length`
+- `1 <= n <= 300`
+- `nums[i]` is either `0`, `1`, or `2`.
+
+**Follow up:** Could you come up with a one-pass algorithm using only constant extra space?
+
+---
+
+# My Approach
+
+```cpp
+class Solution {
+ public:
+  void sortColors(vector<int>& nums) {
+    int st = 0, i = 0, end = nums.size() - 1;
+    while (i <= end) {
+      if (nums[i] > 1) {
+        swap(nums[i], nums[end]);
+        end--;
+      } else if (nums[i] < 1) {
+        swap(nums[i], nums[st]);
+        i++;
+        st++;
+      } else {
+        i++;
+      }
+    }
+    return;
+  }
+};
+```
+
+# Notes
+
+This is a variation of [Dutch National Flag Problem](https://en.wikipedia.org/wiki/Dutch_national_flag_problem). There are other approaches to this question but the most optimal one turns out to be this one.
+
+We start with two pointers (one at left and one at right) and one for current index If we find an element smaller than mid on the current index we swap it with one on the right pointer. This new received element at current pointer may or may not be correctly positioned. Therefore we do not increase the current pointer only the right one is decreased. For the one to be adjusted to the left, this problem does not occur and thus simple swap can be done.
