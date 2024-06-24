@@ -1,0 +1,124 @@
+---
+title: Permutation in String
+tags:
+  - medium
+  - NeetCode150
+date: 2024-06-24T12:41:00
+summary: Given two strings `s1` and `s2`, return `true` if `s2` contains a permutation of `s1`, or `false` otherwise.
+---
+
+# [567. Permutation in String](https://leetcode.com/problems/permutation-in-string/description/)
+
+Given two strings `s1` and `s2`, return `true` if `s2` contains a permutation of `s1`, or `false` otherwise.
+
+In other words, return `true` if one of `s1`'s permutations is the substring of `s2`.
+
+**Example 1:**
+
+```
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba").
+```
+
+**Example 2:**
+
+```
+Input: s1 = "ab", s2 = "eidboaoo"
+Output: false
+```
+
+**Constraints:**
+
+- `1 <= s1.length, s2.length <= 10^4`
+- `s1` and `s2` consist of lowercase English letters.
+
+---
+
+# My Approach
+
+```cpp
+class Solution {
+ public:
+  bool checkInclusion(string s1, string s2) {
+    if (s1.size() > s2.size()) {
+      return false;
+    }
+    int window = 0;
+    vector<int> mp1(26, 0), mp2(26, 0);
+    for (char& c : s1) {
+      mp1[c - 'a']++;
+    }
+    for (int i = 0; i < s2.size(); i++) {
+      window++;
+      mp2[s2.at(i) - 'a']++;
+      if (window == s1.size()) {
+        if (mp1 == mp2) {
+          return true;
+        }
+      }
+      if (window > s1.size()) {
+        mp2[s2.at(i - window + 1) - 'a']--;
+        window--;
+        if (mp1 == mp2) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+};
+```
+
+# Notes
+
+I came up with a simple sliding window approach with window size fixed to the first string and keeping a count of all the characters in the current window and comparing it with the first string char hash count.
+
+My method required comparison of the char hashmaps every time a new window is generated. A more optimized method would be to keep `total count` of matching characters for the first window and then just update this total count accordingly. If adding a new character to the window satisfies its count in first string, we increase the `total count`. But if it increases the count more than required, we decrease `total count`. Vice-versa is done when shrinking the window.
+
+# Better Method
+
+```cpp
+class Solution {
+ public:
+  bool checkInclusion(string s1, string s2) {
+    if (s1.size() > s2.size()) {
+      return false;
+    }
+    int window = 0;
+    vector<int> mp1(26, 0), mp2(26, 0);
+    int ct = 0;
+    for (int i = 0; i < s1.size(); i++) {
+      mp1[s1.at(i) - 'a']++;
+      mp2[s2.at(i) - 'a']++;
+    }
+    for (int i = 0; i < 26; i++) {
+      if (mp1[i] == mp2[i]) {
+        ct++;
+      }
+    }
+    for (int i = s1.size(); i < s2.size(); i++) {
+      if (ct == 26) {
+        return true;
+      }
+      mp2[s2.at(i) - 'a']++;
+      if (mp2[s2.at(i) - 'a'] == mp1[s2.at(i) - 'a']) {
+        ct++;
+      }
+      if (mp2[s2.at(i) - 'a'] == mp1[s2.at(i) - 'a'] + 1) {
+        ct--;
+      }
+      mp2[s2.at(i - s1.size()) - 'a']--;
+      if (mp2[s2.at(i - s1.size()) - 'a'] ==
+          mp1[s2.at(i - s1.size()) - 'a']) {
+        ct++;
+      }
+      if (mp2[s2.at(i - s1.size()) - 'a'] ==
+          mp1[s2.at(i - s1.size()) - 'a'] - 1) {
+        ct--;
+      }
+    }
+    return (ct == 26);
+  }
+};
+```

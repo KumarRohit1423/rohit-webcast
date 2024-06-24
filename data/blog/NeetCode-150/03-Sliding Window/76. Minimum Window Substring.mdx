@@ -1,0 +1,91 @@
+---
+title: Minimum Window Substring
+tags:
+  - hard
+  - NeetCode150
+date: 2024-06-24T17:00:00
+summary: Given two strings `s` and `t` of lengths `m` and `n` respectively, return the minimum window substring of `s` such that every character in `t` (including duplicates) is included in the window. If there is no such substring, return the empty string `""`.
+---
+
+# [76. Minimum Window Substring](https://leetcode.com/problems/minimum-window-substring/description/)
+
+Given two strings `s` and `t` of lengths `m` and `n` respectively, return the **minimum window** **substring** of `s` such that every character in `t` (**including duplicates** ) is included in the window. If there is no such substring, return the empty string `""`.
+
+The testcases will be generated such that the answer is **unique** .
+
+**Example 1:**
+
+```
+Input: s = "ADOBECODEBANC", t = "ABC"
+Output: "BANC"
+Explanation: The minimum window substring "BANC" includes 'A', 'B', and 'C' from string t.
+```
+
+**Example 2:**
+
+```
+Input: s = "a", t = "a"
+Output: "a"
+Explanation: The entire string s is the minimum window.
+```
+
+**Example 3:**
+
+```
+Input: s = "a", t = "aa"
+Output: ""
+Explanation: Both 'a's from t must be included in the window.
+Since the largest window of s only has one 'a', return empty string.
+```
+
+**Constraints:**
+
+- `m == s.length`
+- `n == t.length`
+- `1 <= m, n <= 10^5`
+- `s` and `t` consist of uppercase and lowercase English letters.
+
+**Follow up:** Could you find an algorithm that runs in `O(m + n)` time?
+
+---
+
+# My Approach
+
+```cpp
+class Solution {
+ public:
+  string minWindow(string s, string t) {
+    if (t.size() > s.size()) {
+      return ("");
+    }
+    unordered_map<char, int> mpt;
+    for (int i = 0; i < t.size(); i++) {
+      mpt[t.at(i)]++;
+    }
+    int tstore = t.size(), i = 0;
+    int window = 0, minWindow = INT_MAX, mstart = 0;
+    while (window < s.size()) {
+      if (mpt[s.at(window)] > 0) {
+        tstore--;
+      }
+      mpt[s.at(window)]--;
+      window++;
+      while (tstore == 0) {
+        if ((window - i) < minWindow) {
+          mstart = i;
+          minWindow = window - i;
+        }
+        mpt[s.at(i)]++;
+        if (mpt[s.at(i)] > 0) {
+          tstore++;
+        }
+        i++;
+      }
+    }
+    if (minWindow != INT_MAX) {
+      return (s.substr(mstart, minWindow));
+    }
+    return "";
+  }
+};
+```
